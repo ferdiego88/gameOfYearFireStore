@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './grafico-barra-horizontal.component.html',
   styleUrls: ['./grafico-barra-horizontal.component.css']
 })
-export class GraficoBarraHorizontalComponent   {
+export class GraficoBarraHorizontalComponent implements OnDestroy   {
   results = [
     {
       name: 'Juego 1',
@@ -33,7 +33,23 @@ export class GraficoBarraHorizontalComponent   {
   yAxisLabel = 'Votos';
 
   colorScheme = 'nightLights';
-  constructor() { }
+  intervalo: any;
+  constructor() {
+
+    this.intervalo = setInterval( () => {
+      console.log('TIC');
+      const newResults = [...this.results];
+      for (const i in newResults) {
+        if (newResults) {
+          newResults[i].value = Math.round(Math.random() * 500);
+        }
+      }
+      this.results = [...newResults];
+    }, 1500);
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.intervalo);
+  }
 
   onSelect(event: any) {
     console.log(event);
